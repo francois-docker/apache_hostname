@@ -1,0 +1,57 @@
+---
+name: Build
+
+on:
+  pull_request:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  # Test the image builds and works correctly.
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Test building image.
+        run: docker build -t apache-hostname .
+
+      - name: Run the built image.
+        run: >-
+          docker run --name test-instanciation -d apache-hostname
+
+      # TODO : test apache is running or curl message
+
+  publish:
+    name: Release tag
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: francois/apache_hostname
+
+      - uses: actions/checkout@v2
+      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image.
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
