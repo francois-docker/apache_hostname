@@ -6,6 +6,8 @@ on:
   push:
     tags:
       - '*'
+  schedule:
+    - cron: "42 17 * * 5"
 
 jobs:
   # Test the image builds and works correctly.
