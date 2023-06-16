@@ -1,10 +1,10 @@
-FROM debian:stretch
+FROM debian:bullseye
 MAINTAINER Francois Billant <fbillant@gmail.com>
 
 EXPOSE 80
 
 RUN apt-get update && \ 
-apt-get -y install apache2 libapache2-mod-php7.0 php7.0 --no-install-recommends && \
+apt-get -y install apache2 libapache2-mod-php7.4 php7.4 --no-install-recommends && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
