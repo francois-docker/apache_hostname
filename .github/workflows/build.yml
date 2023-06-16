@@ -35,7 +35,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: francois/apache_hostname
+          images: francois/apache-hostname
 
       - uses: actions/checkout@v2
       - uses: docker/setup-qemu-action@v2
