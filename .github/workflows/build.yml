@@ -41,7 +41,7 @@ jobs:
           images: francois/apache-hostname
 
       - uses: actions/checkout@v7
-      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-qemu-action@v4
       - uses: docker/setup-buildx-action@v4
 
       - name: Login to DockerHub
